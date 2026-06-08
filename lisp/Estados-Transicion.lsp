@@ -1,5 +1,5 @@
 ;; ========================================================
-;; FUNCIÓN: transicion
+;; FUNCIoN: transicion
 ;; NATURALEZA: Pura (Debido a LIST, siempre retornara una lista limpia, dejando los datos originales intactos)
 ;; ESTRATEGIA: Es una Funcion Condicional (Implementada mediante COND y Predicados Logicos)
 ;; IMPACTO: No destructiva

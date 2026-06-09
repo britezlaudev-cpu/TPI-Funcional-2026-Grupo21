@@ -18,3 +18,30 @@
 ;;                            (transicion 'en-verde 'rojo) --> (EN-VERDE "accion-por-defecto")
 ;;                            (transicion 'en-rojo 'azul) --> (EN-ROJO "accion-por-defecto")
 ;; ========================================================
+
+;REQUERIMIENTO 5
+;; ========================================================
+;; FUNCION: ciclos-por-tiempo
+;; NATURALEZA: Pura 
+;; ESTRATEGIA: Calculo Aritmetico (Implementada mediante operaciones matematicas y TRUNCATE)
+;; IMPACTO: No destructiva
+;; ========================================================
+
+(defun ciclos-por-tiempo (minutos)
+   (if (numberp minutos)
+       (truncate (/ (* minutos 60) 216))
+      "ingrese un dato valido"
+   )
+)
+
+;; ========================================================
+;; Ejemplo de uso normal:
+;; (ciclos-por-tiempo 15) --> 4
+;; (ciclos-por-tiempo 60) --> 16
+;; (ciclos-por-tiempo 30) --> 8
+;;
+;; Ejemplo de casos de error:
+;; (ciclos-por-tiempo 'hola) --> "ingrese un dato valido"
+;; (ciclos-por-tiempo '(15)) --> "ingrese un dato valido"
+;; (ciclos-por-tiempo nil) --> "ingrese un dato valido"
+;; ========================================================

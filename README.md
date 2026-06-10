@@ -22,7 +22,7 @@
 **🚦Caracteristicas del Sistema** 
 * **Funcion Transicion de Colores del semaforo** (`Estados-Transicion.lsp`).
 * **Funcion Temporizador Automatico** (`Timer.lisp`).
-* **Funcion Sistema de Auditoria** (``).
+* **Funcion Sistema de Auditoria** (`Sistema-de-Auditoria.lisp`).
 * **Funcion Analista de Ciclos Semafóricos** (`Analisis-de-Ciclos-Semaforicos.lisp`).
 * **Funcion de Planificación Temporal** (`ciclos-por-tiempo.lisp`).
 * **Funcion de Informe de Distribución Temporal** (`Distribución-Temporal.lisp`).
@@ -39,7 +39,7 @@
 Core.lisp
   ├── Estados-Transicion.lsp
   ├── Timer.lisp
-  ├── 
+  ├── Sistema-de-Auditoria.lisp
   ├── Analisis-de-Ciclos-Semaforicos.lisp
   ├── ciclos-por-tiempo.lisp
   └── Distribución-Temporal.lisp

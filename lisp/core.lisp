@@ -46,3 +46,40 @@
 ;; (ciclos-por-tiempo '(15)) --> "ingrese un dato valido"
 ;; (ciclos-por-tiempo nil) --> "ingrese un dato valido"
 ;; ========================================================
+
+
+;; ========================================================
+;; FUNCIÓN: registrar-cambio
+;; NATURALEZA: Impura, porque imprime información en pantalla.
+;; ESTRATEGIA: Función simple.
+;; IMPACTO: No destructiva, no modifica datos existentes.
+;; ========================================================
+
+(defun registrar-cambio (epoch color-anterior color-nuevo)
+  (format t
+          "Tiempo ~A: la luz ha cambiado de ~A a ~A~%"
+          epoch
+          color-anterior
+          color-nuevo))
+
+
+
+
+;; ========================================================
+;; EJEMPLOS DE USO - Sistema de Auditoría
+;; ========================================================
+
+;; Caso normal:
+;; (registrar-cambio 1000 'en-rojo 'en-verde)
+;; Resultado esperado:
+;; Tiempo 1000: la luz ha cambiado de EN-ROJO a EN-VERDE
+
+;; Caso alternativo:
+;; (registrar-cambio 1090 'en-verde 'en-amarillo)
+;; Resultado esperado:
+;; Tiempo 1090: la luz ha cambiado de EN-VERDE a EN-AMARILLO
+
+;; Caso con error de sintaxis:
+;; (registrar-cambio 1000 en-rojo 'en-verde)
+;; Error esperado:
+;; The variable EN-ROJO is unbound.

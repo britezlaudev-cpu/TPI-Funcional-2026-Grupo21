@@ -5,6 +5,13 @@
 
 ## <img width="845" height="336" alt="PushProject" src="https://github.com/user-attachments/assets/7024588e-93c2-459b-9198-952825c1aa9f" />
 
+# Colaboradores
+* Britez Lautaro Tomás
+* Cabrera, Jorge Sebastian
+* Elorrieta Leandro Agustín
+* Fernández Zalazar Jeremías
+* Garay, Lucia Valentina
+
 ## 💻 Acerca del Proyecto
 > Este proyecto fue diseñado para el **desarrollo de la autonomía, análisis crítico y pensamiento algorítmico**, de tal forma que podamos **modelar un problema del mundo real**, como en este caso un sistema de semaforos.
 

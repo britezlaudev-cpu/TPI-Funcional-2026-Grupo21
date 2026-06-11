@@ -4,7 +4,7 @@
 ;; Estrategia: Función Predicado / logica Condicional
 ;; Impacto: No destructiva
 
-(defun timer (timestamp)
+(defun timers (timestamp)
   (cond
     ((< (mod timestamp 216) 90) 'rojo)
     ((< (mod timestamp 216) 96) 'amarillo)

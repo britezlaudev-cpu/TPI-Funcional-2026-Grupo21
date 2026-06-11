@@ -55,16 +55,12 @@
 ;; IMPACTO: No destructiva, no modifica datos existentes.
 ;; ========================================================
 
+(ql:quickload :local-time)
 (defun registrar-cambio (epoch color-anterior color-nuevo)
-  (format t
-          "Tiempo ~A: la luz ha cambiado de ~A a ~A~%"
-          epoch
-          color-anterior
-          color-nuevo))
-
-
-
-
+  (format t "Horario del cambio: [~a], la luz ha cambiado de ~A a ~A~%" 
+            (local-time:format-timestring nil (local-time:unix-to-timestamp epoch) 
+                                              :format '(:year "-" :month "-" :day " " :hour ":" :min ":" :sec)) 
+            color-anterior color-nuevo))
 ;; ========================================================
 ;; EJEMPLOS DE USO - Sistema de Auditoría
 ;; ========================================================
@@ -72,13 +68,11 @@
 ;; Caso normal:
 ;; (registrar-cambio 1000 'en-rojo 'en-verde)
 ;; Resultado esperado:
-;; Tiempo 1000: la luz ha cambiado de EN-ROJO a EN-VERDE
-
+;; Horario del cambio: [1970-01-01 00:16:40], la luz ha cambiado de EN-ROJO a EN-VERDE
 ;; Caso alternativo:
 ;; (registrar-cambio 1090 'en-verde 'en-amarillo)
 ;; Resultado esperado:
-;; Tiempo 1090: la luz ha cambiado de EN-VERDE a EN-AMARILLO
-
+;; Horario del cambio: [1970-01-01 00:18:10], la luz ha cambiado de EN-VERDE a EN-AMARILLO
 ;; Caso con error de sintaxis:
 ;; (registrar-cambio 1000 en-rojo 'en-verde)
 ;; Error esperado:

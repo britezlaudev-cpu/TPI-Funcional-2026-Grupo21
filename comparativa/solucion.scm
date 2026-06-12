@@ -6,9 +6,9 @@
 ; ========================================================
 (define (transicion_scheme color-actual cambiar-a) ; Pocas diferecnias a Trancion-lisp
 	(cond										   ; Se sigue utilizando una estructura cond para las comparaciones entre simbolos
-		((and (eq? cambiar-a 'verde) (eq? color-actual 'en-rojo)) (list color-actual "cambiar-a-verde")) ; Apesar de que se sigue usando el and
-		((and (eq? cambiar-a 'amarillo) (eq? color-actual 'en-verde)) (list color-actual "cambiar-a-amarillo")) ; la diferencia radica en eq? que es la funcion de comparacion de simbolos en scheme
-		((and (eq? cambiar-a 'rojo) (eq? color-actual 'en-amarillo)) (list color-actual "cambiar-a-rojo"))
+		((and (eq? cambiar-a 'rojo) (eq? color-actual 'en-verde)) (list color-actual "cambiar-a-rojo")) ; Apesar de que se sigue usando el and
+		((and (eq? cambiar-a 'verde) (eq? color-actual 'en-rojo)) (list color-actual "cambiar-a-verde")) ; la diferencia radica en eq? que es la funcion de comparacion de simbolos en scheme
+		((and (eq? cambiar-a 'amarillo) (eq? color-actual 'en-verde)) (list color-actual "cambiar-a-amarillo"))
 		(else (list color-actual "accion-por-defecto")))) ; otra diferencia radica en el reemplazo de "t" por "else" en la accion por defecto
 
 ; ========================================================

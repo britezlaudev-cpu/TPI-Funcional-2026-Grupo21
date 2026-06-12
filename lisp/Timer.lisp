@@ -6,6 +6,9 @@
 
 (defun timers (timestamp)
   (cond
-    ((< (mod timestamp 216) 90) 'rojo)
-    ((< (mod timestamp 216) 96) 'amarillo)
-    (t 'verde)))
+    ((< (mod timestamp 216) 87) 'rojo)
+    ((< (mod timestamp 216) 90) 'rojo-intermitente)
+    ((< (mod timestamp 216) 93) 'amarillo)
+    ((< (mod timestamp 216) 96) 'amarillo-intermitente)
+    ((< (mod timestamp 216) 213) 'verde)
+    (t 'verde-intermitente)))

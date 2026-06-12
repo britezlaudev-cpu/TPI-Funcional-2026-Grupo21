@@ -77,3 +77,28 @@
 ;; (registrar-cambio 1000 en-rojo 'en-verde)
 ;; Error esperado:
 ;; The variable EN-ROJO is unbound.
+
+
+;; ========================================================
+;; FUNCION: timer
+;; NATURALEZA: Pura (Mismo timestamp siempre devuelve el mismo color)
+;; ESTRATEGIA: Función Predicado / Lógica Condicional
+;; IMPACTO: No destructiva
+;; ========================================================
+(defun timer (timestamp)
+  (cond
+    ((< (mod timestamp 216) 90) 'rojo)      ;; El ciclo dura 216s en total. Si el resto da menos de 90 va el rojo.
+    ((< (mod timestamp 216) 96) 'amarillo)  ;; Entre el segundo 90 y el 95 (dura 6 segundos) cambia a amarillo.
+    (t 'verde)))                            ;; Para el tiempo restante (del segundo 96 al 215) el semaforo queda en verde
+
+;; ========================================================
+;; Ejemplo de uso normal:
+;; (timer 0) --> ROJO          (Inicio del ciclo)
+;; (timer 92) --> AMARILLO     (Entra en los 6 segundos de transición)
+;; (timer 150) --> VERDE       (Supera los 96 segundos iniciales)
+;; (timer 216) --> ROJO        (Se cumple un ciclo exacto y reinicia)
+;;
+;; Ejemplo de casos de error:
+;; (timer "hola") --> Error: The value "hola" is not of type NUMBER.
+;; (timer 'veintidos) --> Error: The value VEINTIDOS is not of type NUMBER.
+;; ========================================================

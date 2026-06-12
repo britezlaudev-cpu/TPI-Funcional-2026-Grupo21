@@ -7,7 +7,7 @@
 
 (defun ciclos-por-tiempo (minutos)
 	(if (numberp minutos)
-		(truncate (/ (* minutos 60) (duracion-ciclos)))
+		(truncate (/ (* minutos 60) 216))
 		"ingrese un dato valido"
 	)
 )

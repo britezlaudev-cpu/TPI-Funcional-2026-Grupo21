@@ -4,12 +4,12 @@
 ;; ESTRATEGIA: Es una Funcion Condicional (Implementada mediante COND y Predicados Logicos)
 ;; IMPACTO: No destructiva
 ;; ========================================================
-(defun transicion (color-actual cambiar-a)
-  (cond
-     ((and (equal cambiar-a 'rojo) (equal color-actual 'en-verde)) (list color-actual "cambiar-a-rojo")) 
-     ((and (equal cambiar-a 'amarillo) (equal color-actual 'en-rojo)) (list color-actual "cambiar-a-amarillo")) 
-     ((and (equal cambiar-a 'verde) (equal color-actual 'en-amarillo)) (list color-actual "cambiar-a-verde"))
-     (t (list color-actual "accion-por-defecto"))))
+(defun transicion (color-actual cambiar-a) ; recibe dos parametros, el color actual del semaforo y el color al que se cambie
+  (cond                                    ; una estructura condiconal para evaluar las transiciones validas entre colores
+     ((and (equal cambiar-a 'rojo) (equal color-actual 'en-verde)) (list color-actual "cambiar-a-rojo")) ; and para evaluar ambas condiciones y equal para comparar los simbolos
+     ((and (equal cambiar-a 'verde) (equal color-actual 'en-rojo)) (list color-actual "cambiar-a-verde")) ; de ser verdadero retorna una lista con el color actual y la accion a realizar
+     ((and (equal cambiar-a 'amarillo) (equal color-actual 'en-verde)) (list color-actual "cambiar-a-amarillo"))
+     (t (list color-actual "accion-por-defecto")))) ; si todas las condicones son falsas, retorna una accion por defecto
 ;; ========================================================
 ;; Ejemplo de uso normal: (transicion 'en-verde 'rojo) --> (EN-VERDE "cambiar-a-rojo")
 ;;                        (transicion 'en-rojo 'amarillo) --> (EN-ROJO "cambiar-a-amarillo")

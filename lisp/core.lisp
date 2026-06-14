@@ -1,9 +1,11 @@
+;requerimiento 1
 ;; ========================================================
 ;; FUNCION: transicion
 ;; NATURALEZA: Pura (Debido a LIST, siempre retornara una lista limpia, dejando los datos originales intactos)
 ;; ESTRATEGIA: Es una Funcion Condicional (Implementada mediante COND y Predicados Logicos)
 ;; IMPACTO: No destructiva
 ;; ========================================================
+
 (defun transicion (color-actual cambiar-a) ; recibe dos parametros, el color actual del semaforo y el color al que se cambie
   (cond                                    ; una estructura condiconal para evaluar las transiciones validas entre colores
      ((and (equal cambiar-a 'rojo) (equal color-actual 'en-verde)) (list color-actual "cambiar-a-rojo")) ; and para evaluar ambas condiciones y equal para comparar los simbolos
@@ -14,38 +16,63 @@
      ((and (equal cambiar-a 'verde-intermitente) (equal color-actual 'en-amarillo)) (list color-actual "verde-intermitente"))
      (t (list color-actual "accion-por-defecto")))) ; si todas las condicones son falsas, retorna una accion por defecto
 
-;; ========================================================
-;; FUNCION: ciclos-por-tiempo
-;; NATURALEZA: Pura 
-;; ESTRATEGIA: Calculo Aritmetico (Implementada mediante operaciones matematicas y TRUNCATE)
+;requerimiento 2
+;;=========================================================
+;; FUNCION: timer
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función Condicional
 ;; IMPACTO: No destructiva
-;; ========================================================
-(defun ciclos-por-tiempo (minutos)
-	(if (numberp minutos)
-		(truncate (/ (* minutos 60) 216))
-		"ingrese un dato valido"
-	)
-)
+;;=========================================================
 
-;; ========================================================
-;; FUNCIÓN: registrar-cambio
-;; NATURALEZA: Impura, porque imprime información en pantalla.
-;; ESTRATEGIA: Función simple.
-;; IMPACTO: No destructiva, no modifica datos existentes.
-;; ========================================================
-(ql:quickload :local-time)
-(defun registrar-cambio (epoch color-anterior color-nuevo)
-  (format t "Horario del cambio: [~a], la luz ha cambiado de ~A a ~A~%" 
-            (local-time:format-timestring nil (local-time:unix-to-timestamp epoch) 
-                                              :format '(:year "-" :month "-" :day " " :hour ":" :min ":" :sec)) 
-            color-anterior color-nuevo))
+(defun timer (timestamp)
+  (cond
+    ((< (mod timestamp 225) 87) 'rojo)
+    ((< (mod timestamp 225) 90) 'rojo-intermitente)
+    ((< (mod timestamp 225) 93) 'amarillo)
+    ((< (mod timestamp 225) 96) 'amarillo-intermitente)
+    ((< (mod timestamp 225) 213) 'verde)
+    (t 'verde-intermitente)))
 
-;;-------------------------------------------------
-;;Funcion: duracion-ciclo
-;;Naturaleza: Impura
-;;Estrategia de Control: Condicional no recursiva
-;;Impacto en Memoria: No destructiva
-;;-------------------------------------------------
+;requerimiento 3 
+;; ========================================================
+;; FUNCION: informe
+;; NATURALEZA: Impura
+;; ESTRATEGIA: Escritura en archivo 
+;; IMPACTO: Genera/modifica un archivo de texto
+;; ========================================================
+
+(defun informe (datos)
+  (with-open-file
+      (stream "informe-ejecucion-semaforo.txt"
+              :direction :output ;abre el archivo para escribir
+              :if-exists :supersede) ;si ya existe, se reemplaza por completo
+
+    (format stream "Informe de Ejecucion del Sistema Semaforico~%") ; escribe una linea en el archivo
+    (format stream "==========================~%")
+
+    (mapcar
+      (lambda (x)
+        (format stream "~a - Transicion ~A --> ~A~%"
+          (local-time:format-timestring
+            nil ;para que devuelva la fecha y hora como una cadena de texto, con el local-time:format-timestring
+            (local-time:unix-to-timestamp (car x)) ;convierte el tiempo Unix a el formato fecha y hora
+            :format '(:year "-" :month "-" :day
+                      " "
+                      :hour ":" :min ":" :sec))
+          (cadr x) ;color anterior
+          (caddr x))) ;color nuevo
+      datos)
+
+    (format stream "~%--- Fin del Informe ---")))
+
+;requerimiento 4
+;; ========================================================
+;;FUNCION: duracion-ciclo
+;;NATURALEZA: Impura
+;;ESTRATEGIA: Condicional no recursiva
+;;IMPACTO: No destructiva
+;; ========================================================
+
 (defun duracion-ciclo (lista-segundos)
 	(cond
 		((and (consp lista-segundos) (integerp (car lista-segundos)) (integerp (cadr lista-segundos)) (integerp (caddr lista-segundos)))
@@ -58,12 +85,13 @@
 	)
 )
 
-;;--------------------------------------------------
-;;Funcion: recomendacion-ciclo
-;;Naturaleza: Impura
-;;Estrategia de Control: Condicional no recursiva
-;;Impacto en Memoria: No destructiva
-;;--------------------------------------------------
+;; ========================================================
+;;FUNCION: recomendacion-ciclo
+;;NATURALEZA: Impura
+;;ESTATEGIA: Condicional no recursiva
+;;IMPACTO: No destructiva
+;; ========================================================
+
 (defun recomendacion-ciclo (duracion-ciclo-segs)
 	(cond
 		((integerp duracion-ciclo-segs)
@@ -77,25 +105,29 @@
 	)
 )
 
-;; Nombre de la funcion: timer
-;; Su naturaleza: Pura
-;; Estrategia: Función Predicado / logica Condicional
-;; Impacto: No destructiva
-(defun timers (timestamp)
-  (cond
-    ((< (mod timestamp 216) 87) 'rojo)
-    ((< (mod timestamp 216) 90) 'rojo-intermitente)
-    ((< (mod timestamp 216) 93) 'amarillo)
-    ((< (mod timestamp 216) 96) 'amarillo-intermitente)
-    ((< (mod timestamp 216) 213) 'verde)
-    (t 'verde-intermitente)))
+;requerieminto 5
+;; ========================================================
+;; FUNCION: ciclos-por-tiempo-iteracion2
+;; NATURALEZA: Pura 
+;; ESTRATEGIA: Calculo Aritmetico (Implementada mediante operaciones matematicas y TRUNCATE)
+;; IMPACTO: No destructiva
+;; ========================================================
 
-;;--------------------------------------------------
+(defun ciclos-por-tiempo (minutos)
+   (if (numberp minutos)
+       (truncate (/ (* minutos 60) 225)) ;suma los 9s(216, 225)
+      "ingrese un dato valido"
+   )
+)
+
+;requeriminto 6
+;; ========================================================
 ;;Funcion: distribucion-temporal
-;;Naturaleza: Impura
+;;Naturaleza: impura
 ;;Estrategia de Control: Condicional no recursiva
 ;;Impacto en Memoria: No destructiva
-;;--------------------------------------------------
+;; ========================================================
+
 (defun distribucion-temporal (regla-de-ciclo)
 	(if (and (consp regla-de-ciclo) (= (length regla-de-ciclo) 3))
 		(let ((total (reduce '+ regla-de-ciclo)))

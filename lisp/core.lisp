@@ -97,9 +97,9 @@
 ;REQUERIMIENTO 4 (A-B)
 ;; ========================================================
 ;;FUNCION: duracion-ciclo
-;;NATURALEZA: Impura
-;;ESTRATEGIA: Condicional no recursiva
-;;IMPACTO: No destructiva
+;;NATURALEZA: Impura (Utiliza "pprint" para mostrar mensajes de error al usuario)
+;;ESTRATEGIA: Condicional no recursiva (Emplea la funcion "cond" para evaluar distintas condiciones y no es recursiva)
+;;IMPACTO: No destructiva (Unicamente consulta los elementos de la lista, sin modificar la original recibida como parámetro)
 ;; ========================================================
 
 (defun duracion-ciclo (lista-segundos)
@@ -130,9 +130,9 @@
 
 ;; ========================================================
 ;;FUNCION: recomendacion-ciclo
-;;NATURALEZA: Impura
-;;ESTATEGIA: Condicional no recursiva
-;;IMPACTO: No destructiva
+;;NATURALEZA: Impura (Utiliza "pprint" para mostrar mensajes de error al usuario)
+;;ESTRATEGIA: Condicional no recursiva (Emplea la funcion "cond" para evaluar distintas condiciones y no es recursiva)
+;;IMPACTO: No destructiva (Unicamente consulta y verifica condiciones con el parametro que recibe, sin modificar al original recibido como parámetro)
 ;; ========================================================
 
 (defun recomendacion-ciclo (duracion-ciclo-segs)

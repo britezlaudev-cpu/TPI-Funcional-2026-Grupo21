@@ -198,9 +198,9 @@
 ;REQUERIMIENTO 6
 ;; ========================================================
 ;;Funcion: distribucion-temporal
-;;Naturaleza: impura
-;;Estrategia de Control: Condicional no recursiva
-;;Impacto en Memoria: No destructiva
+;;Naturaleza: impura (Ademas de calcular y devolver un valor, utiliza "pprint" para mostrar mensajes al usuario)
+;;Estrategia de Control: Condicional no recursiva (Emplea la funcion "if" para validar el parámetro, y no realiza llamadas recursivas a sí misma)
+;;Impacto en Memoria: No destructiva (No modifica la lista recibida como parámetro sino que crea nuevas listas mediante "list" y "mapcar")
 ;; ========================================================
 
 (defun distribucion-temporal (regla-de-ciclo)

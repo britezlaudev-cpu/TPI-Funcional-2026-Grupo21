@@ -1,7 +1,7 @@
 # TPI-Funcional-2026-Grupo21
 > Desarrollo de un Proyecto Integrador Colaborativo, "Semáforos Inteligentes y Análisis Comparativo de Paradigmas".
 
-> URL Video Explicativo: 
+> URL Video Explicativo: https://youtu.be/WBj3YUB3VVc
 
 ## <img width="845" height="336" alt="PushProject" src="https://github.com/user-attachments/assets/7024588e-93c2-459b-9198-952825c1aa9f" />
 

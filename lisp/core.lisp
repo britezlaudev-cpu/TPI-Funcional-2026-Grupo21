@@ -136,7 +136,7 @@
 (defun distribucion-temporal (regla-de-ciclo)
 	(if (and (consp regla-de-ciclo) (= (length regla-de-ciclo) 3))
 		(let ((total (reduce '+ regla-de-ciclo)))
-			(list "Formato:  ROJO --> ROJO-INT --> AMARILLO --> AMARILLO-INT --> VERDE --> VERDE-INT"
+			(list "Formato:  ROJO --> ROJO-INT --> VERDE --> VERDE-INT --> AMARILLO --> AMARILLO-INT"
 				(mapcar (lambda (regla-de-ciclo)
 							(list (round (/ (* regla-de-ciclo 100) total)) '%)
 						)

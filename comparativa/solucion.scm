@@ -6,11 +6,14 @@
 ; ========================================================
 (define (transicion_scheme color-actual cambiar-a) ; Pocas diferecnias a Trancion-lisp
 	(cond										   ; Se sigue utilizando una estructura cond para las comparaciones entre simbolos
-		((and (eq? cambiar-a 'rojo) (eq? color-actual 'en-verde)) (list color-actual "cambiar-a-rojo")) ; Apesar de que se sigue usando el and
-		((and (eq? cambiar-a 'verde) (eq? color-actual 'en-rojo)) (list color-actual "cambiar-a-verde")) ; la diferencia radica en eq? que es la funcion de comparacion de simbolos en scheme
-		((and (eq? cambiar-a 'amarillo) (eq? color-actual 'en-verde)) (list color-actual "cambiar-a-amarillo"))
-		(else (list color-actual "accion-por-defecto")))) ; otra diferencia radica en el reemplazo de "t" por "else" en la accion por defecto
-
+		((and (eq? cambiar-a 'verde) (eq? color-actual 'en-rojo)) (list color-actual "cambiar-a-verde")) ; Apesar de que se sigue usando el and
+		((and (eq? cambiar-a 'amarillo) (eq? color-actual 'en-verde)) (list color-actual "cambiar-a-amarillo")) ; la diferencia radica en eq? que es la funcion de comparacion de simbolos en scheme
+		((and (eq? cambiar-a 'rojo) (eq? color-actual 'en-amarillo)) (list color-actual "cambiar-a-rojo"))
+		(else (list color-actual "accion-por-defecto")) ; otra diferencia radica en el reemplazo de "t" por "else" en la accion por defecto
+		; de la misma manera que funcion transicion, aqui actualizaremos para las intermitencias en lenguaje scheme
+		((and (eq? cambiar-a 'rojo-intermitente) (eq? color-actual 'en-verde)) (list color-actual "rojo-intermitente")) ; las diferencias en esta actualizacion
+		((and (eq? cambiar-a 'amarillo-intermitente) (eq? color-actual 'en-rojo)) (list color-actual "amarillo-intermitente")) ; a simple vista son nulas
+		((and (eq? cambiar-a 'verde-intermitente) (eq? color-actual 'en-amarillo)) (list color-actual "verde-intermitente")))) ; pues vemos grandes similitudes
 ; ========================================================
 ;; FUNCION: timer
 ;; REQUERIMIENTO 2: Temporizador  version .scm

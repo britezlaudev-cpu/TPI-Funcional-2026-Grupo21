@@ -11,7 +11,7 @@
      ((and (equal cambiar-a 'verde) (equal color-actual 'en-rojo)) (list color-actual "cambiar-a-verde")) ; and para evaluar ambas condiciones y equal para comparar los simbolos
      ((and (equal cambiar-a 'amarillo) (equal color-actual 'en-verde)) (list color-actual "cambiar-a-amarillo")) ; de ser verdadero retorna una lista con el color actual y la accion a realizar
      ((and (equal cambiar-a 'rojo) (equal color-actual 'en-amarillo)) (list color-actual "cambiar-a-rojo"))
-     ; para complemnetra se actualizo la funcion transicion para incluir los requerimientos de la iteracion2|extension1
+     ; para complementar se actualizo la funcion transicion para incluir los requerimientos de la iteracion2|extension1
      ((and (equal cambiar-a 'rojo-intermitente) (equal color-actual 'en-verde)) (list color-actual "rojo-intermitente")) ; esto funcionaria mejor con la ayuda del timer
      ((and (equal cambiar-a 'amarillo-intermitente) (equal color-actual 'en-rojo)) (list color-actual "amarillo-intermitente")) 
      ((and (equal cambiar-a 'verde-intermitente) (equal color-actual 'en-amarillo)) (list color-actual "verde-intermitente"))

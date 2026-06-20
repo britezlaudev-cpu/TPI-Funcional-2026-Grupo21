@@ -14,15 +14,24 @@
 		((and (eq? cambiar-a 'rojo-intermitente) (eq? color-actual 'en-verde)) (list color-actual "rojo-intermitente")) ; las diferencias en esta actualizacion
 		((and (eq? cambiar-a 'amarillo-intermitente) (eq? color-actual 'en-rojo)) (list color-actual "amarillo-intermitente")) ; a simple vista son nulas
 		((and (eq? cambiar-a 'verde-intermitente) (eq? color-actual 'en-amarillo)) (list color-actual "verde-intermitente")))) ; pues vemos grandes similitudes
-; ========================================================
+;requerimiento 2
+;;=========================================================
 ;; FUNCION: timer
-;; REQUERIMIENTO 2: Temporizador  version .scm
-;; NATURALEZA: Pura (Dado un timestamp siempre retorna el mismo color)
-;; ESTRATEGIA: Funcion Predicado / Logica Condicional
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función Condicional
 ;; IMPACTO: No destructiva
-;; ========================================================
-(define (timer timestamp)                     ; Se utiliza 'define' en vez de 'defun' para declarar la funcion en Scheme
-  (cond                                       ; Se mantiene la estructura condicional 'cond' para evaluar los rangos de tiempo
-     ((< (modulo timestamp 216) 90) 'rojo)    ; La diferencia esta en la primitiva matematica, se usa 'modulo' en vez de 'mod' abreviado de Lisp
-     ((< (modulo timestamp 216) 96) 'amarillo)
-     (else 'verde)))                          ; Al igual que arriba, se reemplaza la 't' (True) de Lisp por la palabra 'else'
+;;=========================================================
+
+(define (timer timestamp)                               ; Se usa "define" en vez de "defun" para declarar la funcion en Scheme.
+  (cond                                                 ; Se mantiene la estructura condicional 'cond' para evaluar los rangos de tiempo
+     ;; ciclo rojo: 87s fijo + 3s
+     ((< (modulo timestamp 225) 87) 'rojo)              ; Se usa la primitiva "modulo" en vez de "mod" de Lisp. 
+     ((< (modulo timestamp 225) 90) 'rojo-intermitente)
+     
+     ;; ciclo verde: 117s fijo + 3s
+     ((< (modulo timestamp 225) 207) 'verde)
+     ((< (modulo timestamp 225) 210) 'verde-intermitente)
+     
+     ;; ciclo amarillo: 3s fijo + 3s por descarte
+     ((< (modulo timestamp 225) 213) 'amarillo)
+     (else 'amarillo-intermitente)))                    ; Se reemplaza la "t" de Lisp por la palabra "else" propia de Scheme

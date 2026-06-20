@@ -1,8 +1,4 @@
-;(en-rojo -> verde)
-;(en-verde -> amarillo)
-;(en-amarillo -> rojo)
-
-;REQUERIMIENTO 1
+;requerimiento 1
 ;; ========================================================
 ;; FUNCION: transicion
 ;; NATURALEZA: Pura (Debido a LIST, siempre retornara una lista limpia, dejando los datos originales intactos)
@@ -11,31 +7,16 @@
 ;; ========================================================
 
 (defun transicion (color-actual cambiar-a) ; recibe dos parametros, el color actual del semaforo y el color al que se cambie
-  (cond  								   ; una estructura condiconal para evaluar las transiciones validas entre colores
-	((and (equal cambiar-a 'verde) (equal color-actual 'en-rojo)); and para evaluar ambas condiciones y equal para comparar los simbolos
-        (list color-actual "cambiar-a-verde")); de ser verdadero retorna una lista con el color actual y la accion a realizar
-	((and (equal cambiar-a 'amarillo) (equal color-actual 'en-verde))
-  	    (list color-actual "cambiar-a-amarillo"))
-	((and (equal cambiar-a 'rojo) (equal color-actual 'en-amarillo))
-  		(list color-actual "cambiar-a-rojo"))
-	(t (list color-actual "accion-por-defecto")) ; si todas las condicones son falsas, retorna una accion por defecto
-   )
-)
+  (cond                                    ; una estructura condiconal para evaluar las transiciones validas entre colores
+     ((and (equal cambiar-a 'rojo) (equal color-actual 'en-verde)) (list color-actual "cambiar-a-rojo")) ; and para evaluar ambas condiciones y equal para comparar los simbolos
+     ((and (equal cambiar-a 'amarillo) (equal color-actual 'en-rojo)) (list color-actual "cambiar-a-amarillo")) ; de ser verdadero retorna una lista con el color actual y la accion a realizar
+     ((and (equal cambiar-a 'verde) (equal color-actual 'en-amarillo)) (list color-actual "cambiar-a-verde"))
+     ((and (equal cambiar-a 'rojo-intermitente) (equal color-actual 'en-verde)) (list color-actual "rojo-intermitente")) 
+     ((and (equal cambiar-a 'amarillo-intermitente) (equal color-actual 'en-rojo)) (list color-actual "amarillo-intermitente")) 
+     ((and (equal cambiar-a 'verde-intermitente) (equal color-actual 'en-amarillo)) (list color-actual "verde-intermitente"))
+     (t (list color-actual "accion-por-defecto")))) ; si todas las condicones son falsas, retorna una accion por defecto
 
-;; ========================================================
-;; ;; Ejemplo de uso normal:
-;; (transicion 'en-rojo 'verde) --> (EN-ROJO "cambiar-a-verde")
-;; (transicion 'en-verde 'amarillo) --> (EN-VERDE "cambiar-a-amarillo")
-;; (transicion 'en-amarillo 'rojo) --> (EN-AMARILLO "cambiar-a-rojo")
-;;
-;; Ejemplo de casos de error:
-;; (transicion 'en-rojo 'amarillo) --> (EN-ROJO "accion-por-defecto")
-;; (transicion 'en-verde 'rojo) --> (EN-VERDE "accion-por-defecto")
-;; (transicion 'en-amarillo 'verde) --> (EN-AMARILLO "accion-por-defecto")
-;; (transicion 'en-rojo 'azul) --> (EN-ROJO "accion-por-defecto")
-;; ========================================================
-
-;REQUERIMIENTO 2
+;requerimiento 2
 ;;=========================================================
 ;; FUNCION: timer
 ;; NATURALEZA: Pura
@@ -43,63 +24,53 @@
 ;; IMPACTO: No destructiva
 ;;=========================================================
 
-(defun timers (timestamp)
+(defun timer (timestamp)
   (cond
-    ((< (mod timestamp 216) 90) 'rojo)
-    ((< (mod timestamp 216) 96) 'amarillo)
-    (t 'verde)))
+    ((< (mod timestamp 225) 87) 'rojo)
+    ((< (mod timestamp 225) 90) 'rojo-intermitente)
+    ((< (mod timestamp 225) 93) 'amarillo)
+    ((< (mod timestamp 225) 96) 'amarillo-intermitente)
+    ((< (mod timestamp 225) 213) 'verde)
+    (t 'verde-intermitente)))
 
+;requerimiento 3 
 ;; ========================================================
-;; Ejemplo de uso normal:
-;; (timers 0) --> ROJO          (Inicio del ciclo)
-;; (timers 92) --> AMARILLO     (Entra en los 6 segundos de transición)
-;; (timers 150) --> VERDE       (Supera los 96 segundos iniciales)
-;; (timers 216) --> ROJO        (Se cumple un ciclo exacto y reinicia)
-;;
-;; Ejemplo de casos de error:
-;; (timers "hola") --> Error: The value "hola" is not of type NUMBER.
-;; (timers 'veintidos) --> Error: The value VEINTIDOS is not of type NUMBER.
-;; ========================================================
-
-;REQUERIMIENTO 3
-;; ========================================================
-;; FUNCION: registrar-cambio
-;; NATURALEZA: Impura, porque imprime información en pantalla
-;; ESTRATEGIA: Función simple
-;; IMPACTO: No destructiva, no modifica datos existentes
+;; FUNCION: informe
+;; NATURALEZA: Impura
+;; ESTRATEGIA: Escritura en archivo 
+;; IMPACTO: Genera/modifica un archivo de texto
 ;; ========================================================
 
-(ql:quickload :local-time)
-(defun registrar-cambio (epoch color-anterior color-nuevo)
-  (format t "Horario del cambio: [~a], la luz ha cambiado de ~A a ~A~%" 
-            (local-time:format-timestring nil (local-time:unix-to-timestamp epoch) 
-                                              :format '(:year "-" :month "-" :day " " :hour ":" :min ":" :sec)) 
-            color-anterior color-nuevo))
+(defun informe (datos)
+  (with-open-file
+      (stream "informe-ejecucion-semaforo.txt"
+              :direction :output ;abre el archivo para escribir
+              :if-exists :supersede) ;si ya existe, se reemplaza por completo
 
-;; ========================================================
-;; EJEMPLOS DE USO - Sistema de Auditoría
-;; ========================================================
+    (format stream "Informe de Ejecucion del Sistema Semaforico~%") ; escribe una linea en el archivo
+    (format stream "==========================~%")
 
-;; Caso normal:
-;; (registrar-cambio 1000 'en-rojo 'en-verde)
-;; Resultado esperado:
-;; Horario del cambio: [1970-01-01 00:16:40], la luz ha cambiado de EN-ROJO a EN-VERDE
-;; Caso alternativo:
-;; (registrar-cambio 1090 'en-verde 'en-amarillo)
-;; Resultado esperado:
-;; Horario del cambio: [1970-01-01 00:18:10], la luz ha cambiado de EN-VERDE a EN-AMARILLO
-;; Caso con error de sintaxis:
-;; (registrar-cambio 1000 en-rojo 'en-verde)
-;; Error esperado:
-;; The variable EN-ROJO is unbound.
+    (mapcar
+      (lambda (x)
+        (format stream "~a - Transicion ~A --> ~A~%"
+          (local-time:format-timestring
+            nil ;para que devuelva la fecha y hora como una cadena de texto, con el local-time:format-timestring
+            (local-time:unix-to-timestamp (car x)) ;convierte el tiempo Unix a el formato fecha y hora
+            :format '(:year "-" :month "-" :day
+                      " "
+                      :hour ":" :min ":" :sec))
+          (cadr x) ;color anterior
+          (caddr x))) ;color nuevo
+      datos)
 
+    (format stream "~%--- Fin del Informe ---")))
 
-;REQUERIMIENTO 4 (A-B)
+;requerimiento 4
 ;; ========================================================
 ;;FUNCION: duracion-ciclo
-;;NATURALEZA: Impura (Utiliza "pprint" para mostrar mensajes de error al usuario)
-;;ESTRATEGIA: Condicional no recursiva (Emplea la funcion "cond" para evaluar distintas condiciones y no es recursiva)
-;;IMPACTO: No destructiva (Unicamente consulta los elementos de la lista, sin modificar la original recibida como parámetro)
+;;NATURALEZA: Impura
+;;ESTRATEGIA: Condicional no recursiva
+;;IMPACTO: No destructiva
 ;; ========================================================
 
 (defun duracion-ciclo (lista-segundos)
@@ -108,31 +79,17 @@
 			(cond
 				((or (> (length lista-segundos) 3) (< (length lista-segundos) 3))
 					(pprint "Error de parametro. La cantidad de numeros que representan a los segundos deben ser de 3 (rojo->amarillo->verde)"))
-				(t (+ (car lista-segundos) (cadr lista-segundos) (caddr lista-segundos))))
+				(t (+ (car lista-segundos) (cadr lista-segundos) (caddr lista-segundos) 9)))
 		)
 		(t (pprint "Error, el parametro recibido no es una lista o alguno de sus elementos no es un numero entero"))
 	)
 )
 
 ;; ========================================================
-;; Ejemplo de uso normal:
-;; (duracion-ciclo '(90 6 120)) --> 216
-;; (duracion-ciclo '(60 5 90)) --> 155
-;;
-;; Ejemplo de casos de error:
-;; (duracion-ciclo '(90 6)) --> "Error de parametro..."
-;; (duracion-ciclo '(90 6 120 10)) --> "Error de parametro..."
-;; (duracion-ciclo '(90 a 120)) --> "Error, el parametro recibido no es una lista o alguno de sus elementos no es un numero entero"
-;; (duracion-ciclo 'hola) --> "Error, el parametro recibido no es una lista o alguno de sus elementos no es un numero entero"
-;; ========================================================
-
-
-
-;; ========================================================
 ;;FUNCION: recomendacion-ciclo
-;;NATURALEZA: Impura (Utiliza "pprint" para mostrar mensajes de error al usuario)
-;;ESTRATEGIA: Condicional no recursiva (Emplea la funcion "cond" para evaluar distintas condiciones y no es recursiva)
-;;IMPACTO: No destructiva (Unicamente consulta y verifica condiciones con el parametro que recibe, sin modificar al original recibido como parámetro)
+;;NATURALEZA: Impura
+;;ESTATEGIA: Condicional no recursiva
+;;IMPACTO: No destructiva
 ;; ========================================================
 
 (defun recomendacion-ciclo (duracion-ciclo-segs)
@@ -148,65 +105,33 @@
 	)
 )
 
+;requerieminto 5
 ;; ========================================================
-;; Ejemplo de uso normal:
-;; (recomendacion-ciclo 30)
-;; --> "La duracion del ciclo esta por debajo del recomendado, debe ser mayor a los 35 segundos"
-;;
-;; (recomendacion-ciclo 100)
-;; --> "La duracion del ciclo se encuentra dentro de los estandares de ingenieria de trafico"
-;;
-;; (recomendacion-ciclo 200)
-;; --> "La duracion del ciclo esta por encima del recomendado, debe ser menor a los 150 segundos"
-;;
-;; Ejemplo de casos de error:
-;; (recomendacion-ciclo 'hola)
-;; --> "Error, el parametro recibido no es un numero"
-;;
-;; (recomendacion-ciclo '(90))
-;; --> "Error, el parametro recibido no es un numero"
-;; ========================================================
-
-;REQUERIMIENTO 5
-;; ========================================================
-;;FUNCION; ciclos-por-tiempo
-;;NATURALEZA; Pura
-;;ESTRATEGIA: Calculo Aritmetico
-;;IMPACTO: No destructiva
+;; FUNCION: ciclos-por-tiempo-iteracion2
+;; NATURALEZA: Pura 
+;; ESTRATEGIA: Calculo Aritmetico (Implementada mediante operaciones matematicas y TRUNCATE)
+;; IMPACTO: No destructiva
 ;; ========================================================
 
 (defun ciclos-por-tiempo (minutos)
-	(if (numberp minutos)
-		(truncate (/ (* minutos 60) 216))
-		"ingrese un dato valido"
-	)
+   (if (numberp minutos)
+       (truncate (/ (* minutos 60) 225)) ;suma los 9s(216, 225)
+      "ingrese un dato valido"
+   )
 )
 
-;; ========================================================
-;; Ejemplo de uso normal:
-;; (ciclos-por-tiempo 15) --> 4
-;; (ciclos-por-tiempo 60) --> 16
-;; (ciclos-por-tiempo 30) --> 8
-;;
-;; Ejemplo de casos de error:
-;; (ciclos-por-tiempo 'hola) --> "ingrese un dato valido"
-;; (ciclos-por-tiempo '(15)) --> "ingrese un dato valido"
-;; (ciclos-por-tiempo nil) --> "ingrese un dato valido"
-;; ========================================================
-
-
-;REQUERIMIENTO 6
+;requeriminto 6
 ;; ========================================================
 ;;Funcion: distribucion-temporal
-;;Naturaleza: impura (Ademas de calcular y devolver un valor, utiliza "pprint" para mostrar mensajes al usuario)
-;;Estrategia de Control: Condicional no recursiva (Emplea la funcion "if" para validar el parámetro, y no realiza llamadas recursivas a sí misma)
-;;Impacto en Memoria: No destructiva (No modifica la lista recibida como parámetro sino que crea nuevas listas mediante "list" y "mapcar")
+;;Naturaleza: impura
+;;Estrategia de Control: Condicional no recursiva
+;;Impacto en Memoria: No destructiva
 ;; ========================================================
 
 (defun distribucion-temporal (regla-de-ciclo)
 	(if (and (consp regla-de-ciclo) (= (length regla-de-ciclo) 3))
 		(let ((total (reduce '+ regla-de-ciclo)))
-			(list "Formato: ROJO --> AMARILLO --> VERDE"
+			(list "Formato:  ROJO --> ROJO-INT --> AMARILLO --> AMARILLO-INT --> VERDE --> VERDE-INT"
 				(mapcar (lambda (regla-de-ciclo)
 							(list (round (/ (* regla-de-ciclo 100) total)) '%)
 						)
@@ -218,29 +143,3 @@
 			1) Ser una lista 2) Tener tres elementos")
 	)
 )
-
-;; ========================================================
-;; Ejemplo de uso normal:
-;;
-;; (distribucion-temporal '(90 6 120))
-;; --> ("Formato: ROJO --> AMARILLO --> VERDE"
-;;      ((42 %) (3 %) (56 %)))
-;;
-;; (distribucion-temporal '(60 30 60))
-;; --> ("Formato: ROJO --> AMARILLO --> VERDE"
-;;      ((40 %) (20 %) (40 %)))
-;;
-;; Ejemplo de casos de error:
-;;
-;; (distribucion-temporal '(90 6))
-;; --> "El parametro recibido no cumple con alguna condicion..."
-;;
-;; (distribucion-temporal '(90 6 120 10))
-;; --> "El parametro recibido no cumple con alguna condicion..."
-;;
-;; (distribucion-temporal 'hola)
-;; --> "El parametro recibido no cumple con alguna condicion..."
-;;
-;; (distribucion-temporal nil)
-;; --> "El parametro recibido no cumple con alguna condicion..."
-;; ========================================================

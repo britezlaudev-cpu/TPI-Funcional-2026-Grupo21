@@ -42,9 +42,15 @@
 
 (defun timer (timestamp)
   (cond
-    ((< (mod timestamp 216) 90) 'rojo)
-    ((< (mod timestamp 216) 96) 'amarillo)
-    (t 'verde)))
+    ;; ciclo rojo: 87s fijo + 3s 
+    ((< (mod timestamp 225) 87) 'rojo)
+    ((< (mod timestamp 225) 90) 'rojo-intermitente)
+    ;; ciclo verde: 117s fijo + 3s 
+    ((< (mod timestamp 225) 207) 'verde)
+    ((< (mod timestamp 225) 210) 'verde-intermitente)
+    ;; ciclo amarillo: 3s fijo + 3s por descarte
+    ((< (mod timestamp 225) 213) 'amarillo)
+    (t 'amarillo-intermitente)))
 
 ;; ========================================================
 ;; Ejemplo de uso normal:

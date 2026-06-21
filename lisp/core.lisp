@@ -40,22 +40,22 @@
 ;; IMPACTO: No destructiva
 ;;=========================================================
 
-(defun timer (timestamp)
+(defun temporizador (timestamp)
   (cond
-    ((< (mod timestamp 216) 90) 'rojo)
-    ((< (mod timestamp 216) 96) 'amarillo)
-    (t 'verde)))
+    ((< (mod timestamp 216) 90) 'rojo)       ;; 0 a 89 segundos Dura 90s
+    ((< (mod timestamp 216) 210) 'verde)     ;; 90 a 209 segundos 90 + 120 = 210s
+    (t 'amarillo)))                          ;; 210 a 215 segundos Los 6s finales por descarte
 
 ;; ========================================================
 ;; Ejemplo de uso normal:
-;; (timer 0) --> ROJO          (Inicio del ciclo)
-;; (timer 92) --> AMARILLO     (Entra en los 6 segundos de transición)
-;; (timer 150) --> VERDE       (Supera los 96 segundos iniciales)
-;; (timer 216) --> ROJO        (Se cumple un ciclo exacto y reinicia)
+;; (temporizador 0) --> ROJO          (Inicio del ciclo)
+;; (temporizador 92) --> AMARILLO     (Entra en los 6 segundos de transición)
+;; (temporizador 150) --> VERDE       (Supera los 96 segundos iniciales)
+;; (temporizador 216) --> ROJO        (Se cumple un ciclo exacto y reinicia)
 ;;
 ;; Ejemplo de casos de error:
-;; (timer "hola") --> Error: The value "hola" is not of type NUMBER.
-;; (timer 'veintidos) --> Error: The value VEINTIDOS is not of type NUMBER.
+;; (temporizador "hola") --> Error: The value "hola" is not of type NUMBER.
+;; (temporizador 'veintidos) --> Error: The value VEINTIDOS is not of type NUMBER.
 ;; ========================================================
 
 
@@ -294,7 +294,7 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 
-(defun temporizador (timestamp)
+(defun temporizador2 (timestamp)
   (cond
     ;; ciclo rojo: 87s + 3s 
     ((< (mod timestamp 225) 87) 'rojo)
@@ -313,9 +313,9 @@
 ;; (temporizador 211) --> AMARILLO
 ;; ========================================================
 ;; Ejemplos con intermitencia:
-;; (temporizador 88) --> ROJO-INTERMITENTE
-;; (temporizador 208) --> VERDE-INTERMITENTE
-;; (temporizador 224) --> AMARILLO-INTERMITENTE
+;; (temporizador2 88) --> ROJO-INTERMITENTE
+;; (temporizador2 208) --> VERDE-INTERMITENTE
+;; (temporizador2 224) --> AMARILLO-INTERMITENTE
 ;; ========================================================
 
 

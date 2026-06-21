@@ -17,31 +17,31 @@
      ((and (equal cambiar-a 'verde-intermitente) (equal color-actual 'en-amarillo)) (list color-actual "verde-intermitente"))
      (t (list color-actual "accion-por-defecto")))) ; si todas las condicones son falsas, retorna una accion por defecto, claro que tambien
                                                     ; retornaria un color intermediario de ser necesario
-  ;; ==============================================
-  ;; Ejemplos de uso normal:
-  ;; ==============================================
-  ;; (transicion 'en-rojo 'verde)
-  ;; (transicion 'en-verde 'amarillo)
-  ;; (transicion 'en-amarillo 'rojo)
-  ;; ==============================================
-  ;; Uso de las intermitencias:
-  ;; (transicion 'en-verde 'rojo-intermitente)
-  ;; (transicion 'en-rojo 'amarillo-intermitente)
-  ;; (transicion 'en-amarillo 'verde-intermitente)
-  ;; ==============================================
-  ;; Ejemplos casos de mal uso o de errores:
-  ;; (transicion 'en-rojo 'amarillo)
-  ;; (transicion 'en-amarillo 'rojo-intermitente)
-  ;; (transicion 'en-rojo 'azul)
-  ;; ==============================================
+;; ========================================================
+;; Ejemplos de uso normal:
+;; (transicion 'en-rojo 'verde) -->(EN-ROJO "cambiar-a-verde")
+;; (transicion 'en-verde 'amarillo) -->(EN-VERDE "cambiar-a-amarillo")
+;; (transicion 'en-amarillo 'rojo) -->(EN-AMARILLO "cambiar-a-rojo")
+;; ========================================================
+;; Uso de las intermitencias:
+;; (transicion 'en-verde 'rojo-intermitente) -->(EN-VERDE "rojo-intermitente")
+;; (transicion 'en-rojo 'amarillo-intermitente) -->(EN-ROJO "amarillo-intermitente")
+;; (transicion 'en-amarillo 'verde-intermitente) -->(EN-AMARILLO "verde-intermitente")
+;; ========================================================
+;; Ejemplos casos de mal uso o de errores:
+;; (transicion 'en-rojo 'amarillo) -->(EN-ROJO "accion-por-defecto")
+;; (transicion 'en-amarillo 'rojo-intermitente) -->(EN-AMARILLO "accion-por-defecto")
+;; (transicion 'en-rojo 'azul) -->(EN-ROJO "accion-por-defecto")
+;; ========================================================
+
 
 ;requerimiento 2
-;;=========================================================
-;; FUNCION: timer
+;; ========================================================
+;; FUNCION: temporizador
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Función Condicional
 ;; IMPACTO: No destructiva
-;;=========================================================
+;; ========================================================
 
 (defun temporizador (timestamp)
   (cond
@@ -54,6 +54,19 @@
     ;; ciclo amarillo: 3s + 3s por descarte
     ((< (mod timestamp 225) 213) 'amarillo)
     (t 'amarillo-intermitente)))
+
+;; ========================================================
+;; Ejemplo de uso normal:
+;; (temporizador 50) --> ROJO
+;; (temporizador 100) --> VERDE
+;; (temporizador 211) --> AMARILLO
+;; ========================================================
+;; Ejemplos con intermitencia:
+;; (temporizador 88) --> ROJO-INTERMITENTE
+;; (temporizador 208) --> VERDE-INTERMITENTE
+;; (temporizador 224) --> AMARILLO-INTERMITENTE
+;; ========================================================
+
 
 ;requerimiento 3 
 ;; ========================================================
@@ -87,7 +100,8 @@
       datos)
 
     (format stream "~%--- Fin del Informe ---")))
-;; Ejemplo de uso normal de la funcion
+;; ========================================================
+;; Ejemplo de uso normal:
 ;; (informe '((1717511415 en-rojo verde)               
 ;;    (1717511500 en-verde amarillo)             
 ;;    (1717511506 en-amarillo rojo)              
@@ -96,8 +110,10 @@
 ;;    (1717511800 en-amarillo verde-intermitente)
 ;;    (1717511900 en-rojo accion-por-defecto)    
 ;;   )) 
+;; ========================================================
 
-;requerimiento 4
+
+;requerimiento 4 (a-b)
 ;; ========================================================
 ;;FUNCION: duracion-ciclo
 ;;NATURALEZA: Impura
@@ -116,6 +132,15 @@
 		(t (pprint "Error, el parametro recibido no es una lista o alguno de sus elementos no es un numero entero"))
 	)
 )
+
+;; ========================================================
+;; Ejemplo de uso normal:
+;; (duracion-ciclo '(87 117 3)) --> 216
+;; ========================================================
+;; Ejemplo de casos de error:
+;; (duracion-ciclo '(87 117)) --> "Error de parametro. La cantidad de numeros que representan a los segundos deben ser de 3 (rojo->amarillo->verde)"
+;; (duracion-ciclo 'hola) --> "Error, el parametro recibido no es una lista o alguno de sus elementos no es un numero entero"
+;; ========================================================
 
 ;; ========================================================
 ;;FUNCION: recomendacion-ciclo
@@ -137,6 +162,18 @@
 	)
 )
 
+;; ========================================================
+;; Ejemplo de uso normal:
+;; (recomendacion-ciclo 30) --> "La duracion del ciclo esta por debajo del recomendado, debe ser mayor a los 35 segundos"
+;; (recomendacion-ciclo 100) --> "La duracion del ciclo se encuentra dentro de los estandares de ingenieria de trafico"
+;; (recomendacion-ciclo 200) --> "La duracion del ciclo esta por encima del recomendado, debe ser menor a los 150 segundos"
+;; ========================================================
+;; Ejemplo de casos de error:
+;; (recomendacion-ciclo 'hola) --> "Error, el parametro recibido no es un numero"
+;; (recomendacion-ciclo '(90)) --> "Error, el parametro recibido no es un numero"
+;; ========================================================
+
+
 ;requerieminto 5
 ;; ========================================================
 ;; FUNCION: ciclos-por-tiempo-iteracion2
@@ -151,6 +188,19 @@
       "ingrese un dato valido"
    )
 )
+
+;; ========================================================
+;; Ejemplo de uso normal:
+;; (ciclos-por-tiempo 15) --> 4
+;; (ciclos-por-tiempo 35) --> 9
+;; (ciclos-por-tiempo 60) --> 16
+;; ========================================================
+;; Ejemplo de casos de error:
+;; (ciclos-por-tiempo 'hola) --> "ingrese un dato valido"
+;; (ciclos-por-tiempo '(15)) --> "ingrese un dato valido"
+;; (ciclos-por-tiempo nil) --> "ingrese un dato valido"
+;; ========================================================
+
 
 ;requeriminto 6
 ;; ========================================================
@@ -175,3 +225,12 @@
 			1) Ser una lista 2) Tener tres elementos")
 	)
 )
+
+;; ========================================================
+;; Ejemplo de uso normal:
+;; (distribucion-temporal '(87 117 3)) --> ("Formato: ROJO --> ROJO-INT --> VERDE --> VERDE-INT --> AMARILLO --> AMARILLO-INT" ((42 %) (57 %) (1 %)))
+;; ========================================================
+;; Ejemplo de casos de error:
+;; (distribucion-temporal '(87 117)) --> "El parametro recibido no cumple con alguna condicion: 1) Ser una lista 2) Tener tres elementos"
+;; (distribucion-temporal 'hola) --> "El parametro recibido no cumple con alguna condicion: 1) Ser una lista 2) Tener tres elementos"
+;; ========================================================

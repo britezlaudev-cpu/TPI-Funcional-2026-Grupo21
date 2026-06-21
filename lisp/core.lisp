@@ -16,7 +16,24 @@
      ((and (equal cambiar-a 'amarillo-intermitente) (equal color-actual 'en-rojo)) (list color-actual "amarillo-intermitente")) 
      ((and (equal cambiar-a 'verde-intermitente) (equal color-actual 'en-amarillo)) (list color-actual "verde-intermitente"))
      (t (list color-actual "accion-por-defecto")))) ; si todas las condicones son falsas, retorna una accion por defecto, claro que tambien
-                                                    ; retornaria un color intermediario de ser necesario 
+                                                    ; retornaria un color intermediario de ser necesario
+  ;; ==============================================
+  ;; Ejemplos de uso normal:
+  ;; ==============================================
+  ;; (transicion 'en-rojo 'verde)
+  ;; (transicion 'en-verde 'amarillo)
+  ;; (transicion 'en-amarillo 'rojo)
+  ;; ==============================================
+  ;; Uso de las intermitencias:
+  ;; (transicion 'en-verde 'rojo-intermitente)
+  ;; (transicion 'en-rojo 'amarillo-intermitente)
+  ;; (transicion 'en-amarillo 'verde-intermitente)
+  ;; ==============================================
+  ;; Ejemplos casos de mal uso o de errores:
+  ;; (transicion 'en-rojo 'amarillo)
+  ;; (transicion 'en-amarillo 'rojo-intermitente)
+  ;; (transicion 'en-rojo 'azul)
+  ;; ==============================================
 
 ;requerimiento 2
 ;;=========================================================
@@ -26,7 +43,7 @@
 ;; IMPACTO: No destructiva
 ;;=========================================================
 
-(defun timer (timestamp)
+(defun temporizador (timestamp)
   (cond
     ;; ciclo rojo: 87s + 3s 
     ((< (mod timestamp 225) 87) 'rojo)
@@ -46,6 +63,7 @@
 ;; IMPACTO: Genera/modifica un archivo de texto
 ;; ========================================================
 
+(ql:quickload :local-time)
 (defun informe (datos)
   (with-open-file
       (stream "informe-ejecucion-semaforo.txt"
@@ -69,6 +87,15 @@
       datos)
 
     (format stream "~%--- Fin del Informe ---")))
+;; Ejemplo de uso normal de la funcion
+;; (informe '((1717511415 en-rojo verde)               
+;;    (1717511500 en-verde amarillo)             
+;;    (1717511506 en-amarillo rojo)              
+;;    (1717511600 en-verde rojo-intermitente)    
+;;    (1717511700 en-rojo amarillo-intermitente) 
+;;    (1717511800 en-amarillo verde-intermitente)
+;;    (1717511900 en-rojo accion-por-defecto)    
+;;   )) 
 
 ;requerimiento 4
 ;; ========================================================

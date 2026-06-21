@@ -135,7 +135,7 @@
 
 ;; ========================================================
 ;; Ejemplo de uso normal:
-;; (duracion-ciclo '(87 117 3)) --> 216
+;; (duracion-ciclo '(87 117 3)) --> 216 (87 + 117 + 3 + 9 = 216)
 ;; ========================================================
 ;; Ejemplo de casos de error:
 ;; (duracion-ciclo '(87 117)) --> "Error de parametro. La cantidad de numeros que representan a los segundos deben ser de 3 (rojo->amarillo->verde)"

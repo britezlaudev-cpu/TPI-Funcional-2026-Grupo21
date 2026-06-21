@@ -42,15 +42,9 @@
 
 (defun timer (timestamp)
   (cond
-    ;; ciclo rojo: 87s fijo + 3s 
-    ((< (mod timestamp 225) 87) 'rojo)
-    ((< (mod timestamp 225) 90) 'rojo-intermitente)
-    ;; ciclo verde: 117s fijo + 3s 
-    ((< (mod timestamp 225) 207) 'verde)
-    ((< (mod timestamp 225) 210) 'verde-intermitente)
-    ;; ciclo amarillo: 3s fijo + 3s por descarte
-    ((< (mod timestamp 225) 213) 'amarillo)
-    (t 'amarillo-intermitente)))
+    ((< (mod timestamp 216) 90) 'rojo)
+    ((< (mod timestamp 216) 96) 'amarillo)
+    (t 'verde)))
 
 ;; ========================================================
 ;; Ejemplo de uso normal:
@@ -210,7 +204,7 @@
 (defun distribucion-temporal (regla-de-ciclo)
 	(if (and (consp regla-de-ciclo) (= (length regla-de-ciclo) 3))
 		(let ((total (reduce '+ regla-de-ciclo)))
-			(list "Formato: ROJO --> AMARILLO --> VERDE"
+			(list "Formato: ROJO --> VERDE --> AMARILLO"
 				(mapcar (lambda (regla-de-ciclo)
 							(list (round (/ (* regla-de-ciclo 100) total)) '%)
 						)
@@ -227,11 +221,11 @@
 ;; Ejemplo de uso normal:
 ;;
 ;; (distribucion-temporal '(90 6 120))
-;; --> ("Formato: ROJO --> AMARILLO --> VERDE"
+;; --> ("Formato: ROJO --> VERDE --> AMARILLO"
 ;;      ((42 %) (3 %) (56 %)))
 ;;
 ;; (distribucion-temporal '(60 30 60))
-;; --> ("Formato: ROJO --> AMARILLO --> VERDE"
+;; --> ("Formato: ROJO --> VERDE --> AMARILLO"
 ;;      ((40 %) (20 %) (40 %)))
 ;;
 ;; Ejemplo de casos de error:

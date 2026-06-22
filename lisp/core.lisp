@@ -44,7 +44,7 @@
 ;; ESTRATEGIA: Función Condicional
 ;; IMPACTO: No destructiva
 ;; ========================================================
-
+#+sbcl (sb-ext:unlock-package 'sb-ext) ; Desactivamos el candado de SBCL para poder usar la palabra 'timer'
 (defun timer (timestamp)
   (cond
     ;; ciclo rojo: 87s + 3s 
@@ -59,14 +59,14 @@
 
 ;; ========================================================
 ;; Ejemplo de uso normal:
-;; (temporizador 50) --> ROJO
-;; (temporizador 100) --> VERDE
-;; (temporizador 211) --> AMARILLO
+;; (timer 50) --> ROJO
+;; (timer 100) --> VERDE
+;; (timer 211) --> AMARILLO
 ;; ========================================================
 ;; Ejemplos con intermitencia:
-;; (temporizador2 88) --> ROJO-INTERMITENTE
-;; (temporizador2 208) --> VERDE-INTERMITENTE
-;; (temporizador2 224) --> AMARILLO-INTERMITENTE
+;; (timer 88) --> ROJO-INTERMITENTE
+;; (timer 208) --> VERDE-INTERMITENTE
+;; (timer 224) --> AMARILLO-INTERMITENTE
 ;; ========================================================
 
 
